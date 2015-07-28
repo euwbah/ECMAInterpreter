@@ -1,5 +1,5 @@
 import java.util.*;
-import System;
+import java.io.*;
 
 public class Literal
 {
