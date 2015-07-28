@@ -19,7 +19,7 @@ public class Parser
         }
 
         public static boolean isString(String literalCase) {
-            return stringPattern.matcher(literalCase).mastches();
+            return stringPattern.matcher(literalCase).matches();
         }
     }
 }
