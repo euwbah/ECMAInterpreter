@@ -27,17 +27,25 @@ public class NativeValue {
         } else if (P_Literal.isNumber(literalOrString)) {
             this.type = NativeType.number;
             this.rawNumber = Double.parseDouble(literalOrString.trim());
-        } else if (P_Literal.isString(literalOrString)) {
+        } else {//String, works both ways :P
             this.type = NativeType.string;
             this.rawString = literalOrString;
         }
     }
 
+    /**
+     * Directly set as number
+     * @param rawNumber Number value to set as
+     */
     public NativeValue(double rawNumber) {
         this.rawNumber = rawNumber;
         this.type = NativeType.number;
     }
 
+    /**
+     * Directly set as boolean
+     * @param rawBoolean Boolean value to set as
+     */
     public NativeValue(boolean rawBoolean) {
         this.rawBoolean = rawBoolean;
         this.type = NativeType.bool;
@@ -88,6 +96,22 @@ public class NativeValue {
             returnable = rawString;
         }
         return returnable;
+    }
+
+    /**
+     * Get number value
+     * @return Returns the number value as a double
+     */
+    public double getRawNumber() {
+        return this.rawNumber;
+    }
+
+    /**
+     * Get boolean value
+     * @return Returns the boolean value as a boolean
+     */
+    public boolean getRawBoolean() {
+        return this.rawBoolean;
     }
 
     public enum NativeType {

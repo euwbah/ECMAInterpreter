@@ -21,5 +21,19 @@ public class Parser
         public static boolean isString(String literalCase) {
             return stringPattern.matcher(literalCase).matches();
         }
+
+        public static boolean isLiteral(String testCase) {
+            return isNumber(testCase) || isBool(testCase) || isString(testCase);
+        }
+    }
+
+    public static class Tokenizer
+    {
+        public static TokenGroup TokenizeExpression(String expression)
+        {
+            TokenGroup currentGroup = new TokenGroup();
+
+            return currentGroup;
+        }
     }
 }
