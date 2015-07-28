@@ -36,4 +36,48 @@ public class Parser
             return currentGroup;
         }
     }
+
+    public static class Helper
+    {
+        /**
+         * Removes everything encapsulated in "" for Lexing purposes
+         * @param expression The raw expression
+         * @return Returns the raw expression without string literals
+         */
+        public static String removeAllStringLiterals(String expression)
+        {
+            String returnable = "";
+            boolean currentlyAString = false;
+            boolean usesDoubleQuote = false;
+
+            for(int i = 0; i < expression.length(); i++) {
+                String curr = String.valueOf(expression.charAt(i));
+
+                if(!currentlyAString) {
+                    if(curr.equals("'")) {
+                        currentlyAString = true;
+                        usesDoubleQuote = false;
+                    }
+                    else if(curr.equals('"')) {
+                        currentlyAString = true;
+                        usesDoubleQuote = true;
+                    }
+                    else {
+                        returnable += curr;
+                    }
+                }
+                else {
+                    if((usesDoubleQuote && curr.equals('"')) ||
+                            (!usesDoubleQuote && curr.equals("'"))) {
+                        currentlyAString = false;
+                    }
+                    else if(curr.equals("\\")) {
+                        i++;//Skip the next char...
+                    }
+                }
+            }
+
+            return returnable;
+        }
+    }
 }

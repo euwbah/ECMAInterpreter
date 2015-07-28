@@ -1,7 +1,9 @@
 /**
  * Created by Matthew on 28/7/2015.
  */
-public class Operator {
+public class Operator extends Token{
+    public OperatorGroup opGrp;
+
     public enum OperatorGroup {
         /**
          * 1st order; split by '.&nbsp;'.
