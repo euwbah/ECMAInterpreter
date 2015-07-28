@@ -1,9 +1,12 @@
+package ObjectTypes;
+
 import java.util.*;
 import java.io.*;
-import Parser.P_Literal;
+import Parser.*;
+import Parser.Parser.P_Literal;
 
 /**
- * NativeValue class.&nbsp;Used in Variable as well as Literals
+ * ObjectTypes.NativeValue class.&nbsp;Used in Variable as well as Literals
  */
 public class NativeValue {
     private double rawNumber;

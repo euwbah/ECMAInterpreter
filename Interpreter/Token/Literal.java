@@ -1,5 +1,6 @@
-import java.util.*;
-import java.io.*;
+package Token;
+
+import ObjectTypes.*;
 
 public class Literal extends Token
 {

@@ -1,6 +1,9 @@
 /**
  * Created by Matthew on 28/7/2015.
  */
+
+package Token;
+
 public class Operator extends Token{
     public OperatorGroup opGrp;
 

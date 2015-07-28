@@ -1,6 +1,11 @@
+package Parser;
+
+import Token.*;
+
 import java.util.*;
 import java.io.*;
 import java.util.regex.Pattern;
+
 
 public class Parser
 {
@@ -78,6 +83,17 @@ public class Parser
             }
 
             return returnable;
+        }
+
+        /**
+         * Returns the top level, removing all brackets.
+         * Used to check for the lowest precedence operator in an expression
+         *
+         * @param expression A full-fledged expression
+         * @return An expression with anything in brackets removed..
+         */
+        public static String returnTopLevelExpression(String expression) {
+            //TODO
         }
     }
 }
