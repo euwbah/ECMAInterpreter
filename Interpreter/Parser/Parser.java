@@ -92,8 +92,14 @@ public class Parser
          * @param expression A full-fledged expression
          * @return An expression with anything in brackets removed..
          */
-        public static String returnTopLevelExpression(String expression) {
-            //TODO
+        public static OperatorGroup getLowestPrecedenceOperator(TokenGroup group) {
+			
+			for(int i = 0; i < group.tokens.count; i++) {
+				
+				if(depth == 0) {
+					returnable ++;
+				}
+			}
         }
     }
 }
