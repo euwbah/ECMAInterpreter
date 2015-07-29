@@ -4,10 +4,13 @@ package ObjectTypes;
  * Created by Matthew on 28/7/2015.
  */
 public class Object {
-    NativeValue nativeValue;
+    /**
+     * The object's reference name.
+     */
+    public String refName;
 
-    public Object(NativeValue nativeValue)
+    public Object(String refName)
     {
-        this.nativeValue = nativeValue;
+        this.refName = refName;
     }
 }

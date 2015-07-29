@@ -7,6 +7,7 @@ import Token.Operator.*;
 public class Main {
     public static void main(String[] args) {
         //Testing... testing...
-        System.out.print(OperatorGroup.Multiplicative.compareTo(OperatorGroup.Unary));
+        TokenGroup temp = Parser.Tokenizer.TokenizeExpression("+");
+        System.out.print(temp.toString());
     }
 }
