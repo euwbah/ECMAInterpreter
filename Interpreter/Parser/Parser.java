@@ -83,10 +83,8 @@ public class Parser
                     toBeScanned = toBeScanned.substring(currentIdentifierBeforeNextOperator.length());
                     NativeValue.NativeType nativeType = P_Literal.getTypeOfLiteral(currentIdentifierBeforeNextOperator);
                     if(nativeType != null) {
-                        //Is native
-                        if (nativeType == NativeValue.NativeType.bool) ;
-                        else if (nativeType == NativeValue.NativeType.number) ;
-                        else if (nativeType == NativeValue.NativeType.string) ;
+                        //Is a native type
+                        currentGroup.add(new Literal(currentIdentifierBeforeNextOperator));
                     }
                     else {
                         //Is a reference identifier. (Variable name, method name)

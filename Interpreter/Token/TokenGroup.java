@@ -27,4 +27,8 @@ public class TokenGroup extends Token {
 
         return returnable;
     }
+
+    public void add(Token token) {
+        this.tokens.add(token);
+    }
 }
