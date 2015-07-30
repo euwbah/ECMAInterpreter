@@ -1,4 +1,4 @@
-package ObjectTypes;
+package Elements;
 
 /**
  * Created by Matthew on 28/7/2015.
@@ -12,5 +12,9 @@ public class Object {
     public Object(String refName)
     {
         this.refName = refName;
+    }
+
+    public Object() {
+
     }
 }

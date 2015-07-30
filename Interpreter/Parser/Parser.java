@@ -1,10 +1,8 @@
 package Parser;
 
-import ObjectTypes.NativeValue;
+import Elements.NativeValue;
 import Token.*;
 
-import java.util.*;
-import java.io.*;
 import java.util.regex.Pattern;
 import Token.Operator.*;
 

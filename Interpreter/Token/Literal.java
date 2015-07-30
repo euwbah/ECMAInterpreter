@@ -1,6 +1,6 @@
 package Token;
 
-import ObjectTypes.*;
+import Elements.*;
 
 public class Literal extends Token
 {
