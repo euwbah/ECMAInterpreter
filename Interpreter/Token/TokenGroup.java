@@ -21,7 +21,7 @@ public class TokenGroup extends Token {
         String returnable = "";
         for(Token t : tokens) {
             if(t instanceof UnaryOperator) {
-                returnable += ((UnaryOperator) t).type.toString();
+                returnable += "{" + ((UnaryOperator) t).type.toString() + "}";
             }
         }
 
