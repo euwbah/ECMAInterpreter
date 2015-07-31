@@ -88,6 +88,7 @@ public class Parser
                     }
                     else {
                         //Is a reference identifier. (Variable name, method name)
+                        currentGroup.add(new Identifier(currentIdentifierBeforeNextOperator));
                     }
                 }
                 //TODO:

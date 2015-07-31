@@ -32,6 +32,8 @@ public class Class extends Object {
     public Class(NativeValue nativeValue) {
         this.type = Type.NativeObject;
         isStatic = false;
+        this.localVariables = new ArrayList<Class>();
+        this.localMethods = new ArrayList<Method>();
     }
 
     /**
@@ -39,7 +41,8 @@ public class Class extends Object {
      * @param localVariables
      */
     public Class(ArrayList<Class> localVariables) {
-
+        this.localVariables = new ArrayList<Class>();
+        this.localMethods = new ArrayList<Method>();
     }
 
     /**
@@ -47,11 +50,15 @@ public class Class extends Object {
      */
     public Class() {
         this.type = Type.Null;
+        this.localVariables = new ArrayList<>();
+        this.localMethods = new ArrayList<>();
     }
 
     public Object Instantiate() {
         //TODO;
         Class instance;
+
+        return new Error("Unable to instantiate");
     }
 
     /**

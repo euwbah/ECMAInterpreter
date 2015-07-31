@@ -2,11 +2,17 @@ package Elements;
 
 import Token.TokenGroup;
 
+import java.util.ArrayList;
+
 /**
- * Created by Matthew on 30/7/2015.
+ * Method class.
+ * Contains a TokenGroup of all the statements to evaluate and execute,
+ * and an ArrayList&lt;Class&gt; of local variables...
+ * Function parameters are evaluated upon init of class, and their refNames are stored in localVariables
  */
-public class Method {
+public class Method extends Object{
     public TokenGroup tokens;
+    public ArrayList<Class> localVariables;
 
     public Object doMethod(Class context) {
         //TODO

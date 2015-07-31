@@ -1,7 +1,11 @@
 package Elements;
 
 /**
- * Created by Matthew on 28/7/2015.
+ * The master Object class of which everything is derived from...
+ * The following classes extend the Object class:
+ * @see Class
+ * @see Error
+ * @see Method
  */
 public class Object {
     /**
