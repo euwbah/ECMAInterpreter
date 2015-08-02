@@ -1,4 +1,4 @@
-package Parser;
+package Evaluator;
 
 import Elements.*;
 import Elements.Class;
