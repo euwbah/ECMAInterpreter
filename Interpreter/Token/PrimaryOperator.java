@@ -6,9 +6,12 @@ package Token;
 public class PrimaryOperator extends Operator {
     public PrimaryOperatorType type;
 
-    public PrimaryOperator() {};
+    public PrimaryOperator() {
+        this.opGrp = OperatorGroup.Primary;
+    }
     public PrimaryOperator(PrimaryOperatorType type) {
         this.type = type;
+        this.opGrp = OperatorGroup.Primary;
     }
 
     public enum PrimaryOperatorType {

@@ -68,12 +68,30 @@ public class Parser
                     switch(operatorString) {
                         case "+":
                             if(currentGroup.tokens.size() == 0) {
-                                //+ is the first operator, hence Unary positive.
-                                currentGroup.tokens.add(new UnaryOperator(UnaryOperator.UnaryOperatorType.positive));
+                                //+ is the first operator, hence Unary Positive.
+                                UnaryOperator op = new UnaryOperator(UnaryOperator.UnaryOperatorType.Positive);
+                                op.setPosition(currentCodePosition);
+                                currentGroup.tokens.add(op);
                             }
                             else {
                                 //Binary param addition operator
-                                currentGroup.tokens.add(new AdditiveOperator(AdditiveOperator.AdditiveOperatorType.Addition));
+                                AdditiveOperator op = new AdditiveOperator(AdditiveOperator.AdditiveOperatorType.Addition);
+                                op.setPosition(currentCodePosition);
+                                currentGroup.tokens.add(op);
+                            }
+                            break;
+                        case "-":
+                            if(currentGroup.tokens.size() == 0) {
+                                //+ is the first operator, hence Unary Positive.
+                                UnaryOperator op = new UnaryOperator(UnaryOperator.UnaryOperatorType.Negative);
+                                op.setPosition(currentCodePosition);
+                                currentGroup.tokens.add(op);
+                            }
+                            else {
+                                //Binary param addition operator
+                                AdditiveOperator op = new AdditiveOperator(AdditiveOperator.AdditiveOperatorType.Subtraction);
+                                op.setPosition(currentCodePosition);
+                                currentGroup.tokens.add(op);
                             }
                             break;
                     }
@@ -87,11 +105,15 @@ public class Parser
                     NativeValue.NativeType nativeType = P_Literal.getTypeOfLiteral(currentIdentifierBeforeNextOperator);
                     if(nativeType != null) {
                         //Is a native type
-                        currentGroup.add(new Literal(currentIdentifierBeforeNextOperator));
+                        Literal lit = new Literal(currentIdentifierBeforeNextOperator);
+                        lit.setPosition(currentCodePosition);
+                        currentGroup.add(lit);
                     }
                     else {
                         //Is a reference identifier. (Variable name, method name)
-                        currentGroup.add(new Identifier(currentIdentifierBeforeNextOperator));
+                        Identifier iden = new Identifier(currentIdentifierBeforeNextOperator);
+                        iden.setPosition(currentCodePosition);
+                        currentGroup.add(iden);
                     }
 
                     currentCodePosition.increment(currentIdentifierBeforeNextOperator);
@@ -285,28 +307,29 @@ public class Parser
          */
         public static Token parse (TokenGroup tokens)
         {
+            //TODO:
             TokenGroup returnable = new TokenGroup();
             OperatorGroup lowestPrecedenceOperator = Helper.getLowestPrecedenceOperator(tokens);
 
-            Token firstToken = tokens.get(0);
-            if(firstToken != null) {
-                if(firstToken instanceof Operator) {
-                    returnable.add(firstToken);
+            //Use this to split Token Groups...
+            TokenGroup currentGroup;
 
-                    if(tokens.size() > 1) {
-                        Token rest = parse(tokens.subList(1));
-                        if(rest instanceof ParseError) {
+            for(int i = 0; i < tokens.size(); i++) {
 
-                        }
-                    }
-                }
-                //Check if the token is nested already during the lexing process due to bracketing.
-                else if(firstToken instanceof TokenGroup) {
-
-                }
             }
 
             return returnable;
+        }
+
+        /**
+         * Splits a {@link TokenGroup} into a set of TokenGroups separated by an operator of specific precedence.
+         * @param opSplit The {@link OperatorGroup} to split by.
+         * @param sampleSpace The input TokenGroup
+         * @return Returns a TokenGroup containing TokenGroups encapsulating Tokens, separated by Operators of the given {@link OperatorGroup}.
+         *         If no splits at all, simply return the input sample space.
+         */
+        private static TokenGroup splitBy(OperatorGroup opSplit, TokenGroup sampleSpace) {
+            //TODO
         }
     }
 }

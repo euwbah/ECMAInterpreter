@@ -20,6 +20,22 @@ public class CodePosition
         this.charPosByLine = charPosByLine;
     }
 
+    public CodePosition(int linePos, int charPosByLine, int netCharPos) {
+        this.linePos = linePos;
+        this.charPosByLine = charPosByLine;
+        this.netCharPos = netCharPos;
+    }
+
+    /**
+     * To produce an unreferenced clone.
+     * @param toClone The original CodePosition to clone.
+     */
+    public CodePosition (CodePosition toClone) {
+        this.linePos = toClone.linePos;
+        this.charPosByLine = toClone.charPosByLine;
+        this.netCharPos = toClone.netCharPos;
+    }
+
     /**
      * To increment the code position value based on a given String
      * Used like a cursor. Moves the position of the 'cursor' to proceed last char of the given String

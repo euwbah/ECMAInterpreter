@@ -8,9 +8,10 @@ public class UnaryOperator extends Operator {
 
     public UnaryOperator(UnaryOperatorType type) {
         this.type = type;
+        this.opGrp = OperatorGroup.Unary;
     }
 
     public enum UnaryOperatorType {
-        positive, negative, negation,
+        Positive, Negative, Negation,
     }
 }

@@ -1,14 +1,11 @@
 import Parser.*;
+import Token.TokenGroup;
 
 public class Main {
     public static void main(String[] args) {
         //Testing... testing...
-        String randomCode =
-                "asdf123\n" +
-                "a";
-        CodePosition pos = new CodePosition();
-        pos.increment(randomCode);
+        TokenGroup test = Parser.Tokenizer.TokenizeExpression("6 + 8.3");
 
-        System.out.print(pos.toString());
+        System.out.print(test.toString());
     }
 }

@@ -20,14 +20,15 @@ public class TokenGroup extends Token {
     public String toString() {
         String returnable = "";
         for(Token t : tokens) {
-            if(t instanceof UnaryOperator) {
-                returnable += "{" + ((UnaryOperator) t).type.toString() + "}";
+            if(t instanceof Operator) {
+                returnable += "@" + t.getPosition().toString() + "::" + "{" + t.toString() + "}" + "\n";
             }
             else if(t instanceof Literal) {
-                returnable += "{Literal " + ((Literal) t).rawLiteralString + "::" + ((Literal) t).literalValue.type.toString() + "}";
+                returnable += "@" + t.getPosition().toString() + ": " +
+                        "{Literal " + ((Literal) t).rawLiteralString + "::" + ((Literal) t).literalValue.type.toString() + "}" + "\n";
             }
             else if(t instanceof Identifier) {
-                returnable += "{Identifier " + ((Identifier) t).name + "}";
+                returnable += "@" + t.getPosition().toString() + ": " + "{Identifier " + ((Identifier) t).name + "}" + "\n";
             }
         }
 

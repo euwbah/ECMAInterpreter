@@ -64,4 +64,45 @@ public class Operator extends Token{
          */
         Assignement
     }
+
+    public String toString() {
+        String returnable = "Undefined";
+        switch(opGrp) {
+            case Primary:
+                returnable = "Primary::";
+                returnable += ((PrimaryOperator) this).type.toString();
+                break;
+            case Unary:
+                returnable = "Unary::";
+                returnable += ((UnaryOperator) this).type.toString();
+                break;
+            case Multiplicative:
+                returnable = "Multiplicative::";
+                break;
+            case Additive:
+                returnable = "Additive::";
+                returnable += ((AdditiveOperator) this).type.toString();
+                break;
+            case Relational:
+                returnable = "Relational::";
+                break;
+            case Equatorial:
+                returnable = "Equatorial::";
+                break;
+            case ConditionalAND:
+                returnable = "Conditional And::";
+                break;
+            case ConditionalOR:
+                returnable = "Conditional Or::";
+                break;
+            case Conditional:
+                returnable = "Conditional[?:]::";
+                break;
+            case Assignement:
+                returnable = "Assignment::";
+                break;
+        }
+
+        return returnable;
+    }
 }

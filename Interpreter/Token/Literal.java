@@ -22,7 +22,7 @@ public class Literal extends Token
      */
     public Literal(String rawLiteralString)
     {
-        this.rawLiteralString = rawLiteralString;
-        this.literalValue = new NativeValue(rawLiteralString);
+        this.rawLiteralString = rawLiteralString.trim();//Don't need no whitespace..
+        this.literalValue = new NativeValue(this.rawLiteralString);
     }
 }
