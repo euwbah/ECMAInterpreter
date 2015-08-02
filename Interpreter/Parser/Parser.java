@@ -54,8 +54,6 @@ public class Parser
         {
             TokenGroup currentGroup = new TokenGroup();
             String toBeScanned = expression;
-            int lineNumber = 0;
-            int charNumber = 0;
 
             //Repeat until everything is scanned
             while(!toBeScanned.trim().equals("")) {
@@ -148,44 +146,6 @@ public class Parser
             }
 
             return returnable;
-        }
-    }
-
-    /**
-     * A data-type class storing a single position of a char based on lines and chars.
-     * Works as a cursor...
-     */
-    public class CodePosition
-    {
-        public int linePos;
-        public int charPos;
-
-        public CodePosition() {
-            linePos = 0;
-            charPos = 0;
-        }
-
-        public CodePosition(int linePos, int charPos) {
-            this.linePos = linePos;
-            this.charPos = charPos;
-        }
-
-        /**
-         * To increment the code position value based on a given String
-         * Used like a cursor. Brings the position of the 'cursor' at the last char of the given String
-         * @param stringAddOn The String of which the cursor should be positioned at the last char.
-         */
-        public void increment(String stringAddOn) {
-            for(char c : stringAddOn.toCharArray()) {
-                String s = String.valueOf(c);
-
-                if(s.equals("\n")) {
-                    this.linePos ++;
-                }
-                else {
-                    this.charPos ++;
-                }
-            }
         }
     }
 
