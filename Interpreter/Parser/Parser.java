@@ -54,11 +54,11 @@ public class Parser
         {
             TokenGroup currentGroup = new TokenGroup();
             String toBeScanned = expression;
+            CodePosition currentCodePosition = new CodePosition();
 
             //Repeat until everything is scanned
             while(!toBeScanned.trim().equals("")) {
                 String currentIdentifierBeforeNextOperator = returnStringUntilNextOperator(toBeScanned);
-
                 //Operator mode (aka, no identifiers before the next operator, aka now is the next operator)
                 if(currentIdentifierBeforeNextOperator.trim().equals("")) {
                     //This means that toBeScanned starts with an operator
@@ -77,6 +77,8 @@ public class Parser
                             }
                             break;
                     }
+
+                    currentCodePosition.increment(operatorString);
                 }
                 //Identifier mode
                 else {
@@ -91,6 +93,8 @@ public class Parser
                         //Is a reference identifier. (Variable name, method name)
                         currentGroup.add(new Identifier(currentIdentifierBeforeNextOperator));
                     }
+
+                    currentCodePosition.increment(currentIdentifierBeforeNextOperator);
                 }
                 //TODO:
             }
