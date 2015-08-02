@@ -4,6 +4,13 @@
 
 package Token;
 
+/**
+ * Main operator class.
+ *
+ * @see AdditiveOperator
+ * @see PrimaryOperator
+ * @see UnaryOperator
+ */
 public class Operator extends Token{
     public OperatorGroup opGrp;
 

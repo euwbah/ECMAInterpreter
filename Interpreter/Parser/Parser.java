@@ -1,6 +1,7 @@
 package Parser;
 
-import Elements.NativeValue;
+import Elements.*;
+import Elements.Error;
 import Token.*;
 
 import java.util.regex.Pattern;
@@ -45,7 +46,7 @@ public class Parser
     public static class Tokenizer
     {
         /**
-         * Basically a Parser solely for expressions
+         * Basically a Lexer solely for expressions
          * @param expression An expression
          * @return Returns a TokenGroup of the TokenizedExpression
          */
@@ -53,6 +54,8 @@ public class Parser
         {
             TokenGroup currentGroup = new TokenGroup();
             String toBeScanned = expression;
+            int lineNumber = 0;
+            int charNumber = 0;
 
             //Repeat until everything is scanned
             while(!toBeScanned.trim().equals("")) {
@@ -100,7 +103,8 @@ public class Parser
         /**
          * Checks a String and returns everything until the next operator (excluding the operator)
          * @param expression A String to check for
-         * @return Returns everything before the next operator. Returns "" if the first char is non-alphanumeric.
+         * @return Returns everything before the next operator.
+         *         Returns "" if the first char is an operator.
          */
         private static String returnStringUntilNextOperator(String expression) {
             String returnable = "";
@@ -111,7 +115,7 @@ public class Parser
                 String next = i + 1 < expression.length() ? String.valueOf(expression.charAt(i + 1)) : "";
                 String prev = i - 1 >= 0 ? String.valueOf(expression.charAt(i - 1)) : "";
 
-                if(Helper.isAlphaNumeric(curr))//Simple
+                if(Helper.isAlphaNumeric(curr) || Helper.isWhiteSpace(curr))//Simple
                     returnable += curr;
                 else if(curr.equals(".") && !deciamalPointEncountered
                         && !(Helper.isLetter(next) || Helper.isLetter(prev))) {//Decimal points are not possession ops
@@ -125,19 +129,63 @@ public class Parser
             return returnable;
         }
 
+        /**
+         * Checks a String and returns everything until the next identifier (excluding the first char of the identifier)
+         * @param expression A String to check for
+         * @return Returns everything before the next Identifier.
+         *         Returns "" if the first char is not an operator (whitespace inclusive).
+         */
         private static String returnStringUntilNextIdentifier(String expression) {
             String returnable = "";
 
             for(int i = 0; i < expression.length(); i++) {
                 String curr = String.valueOf(expression.charAt(i));
 
-                if(Helper.isAlphaNumeric(curr))
+                if(Helper.isAlphaNumeric(curr) || Helper.isWhiteSpace(curr))
                     return returnable;
                 else
                     returnable += curr;
             }
 
             return returnable;
+        }
+    }
+
+    /**
+     * A data-type class storing a single position of a char based on lines and chars.
+     * Works as a cursor...
+     */
+    public class CodePosition
+    {
+        public int linePos;
+        public int charPos;
+
+        public CodePosition() {
+            linePos = 0;
+            charPos = 0;
+        }
+
+        public CodePosition(int linePos, int charPos) {
+            this.linePos = linePos;
+            this.charPos = charPos;
+        }
+
+        /**
+         * To increment the code position value based on a given String
+         * Used like a cursor. Brings the position of the 'cursor' at the last char of the given String
+         * @param stringAddOn The String of which the cursor should be positioned at the last char.
+         */
+        public void increment(String stringAddOn) {
+            for(char c : stringAddOn.toCharArray()) {
+                String s = String.valueOf(c);
+
+                if(s.equals("\n")) {
+                    this.linePos ++;
+                }
+                else {
+                    this.charPos ++;
+                }
+            }
         }
     }
 
@@ -255,6 +303,46 @@ public class Parser
          */
         public static boolean isNotOperator(String test) {
             return notOperatorPattern.matcher(test).matches();
+        }
+    }
+
+    public static class TreeParsing
+    {
+        /**
+         * Convert tokens into a ParseTree. <p>
+         * A recursive function...
+         * This function creates branches based on operator precedence. Branches are split by TokenGroups
+         * Brackets are already handled during the lexing process.
+         *
+         *
+         * @param tokens The input Lexed tokens
+         * @return Returns a tree parsed TokenGroup using other TokenGroups as nodes.
+         *         Should there be an error, returns an {@link Error} instead..
+         */
+        public static Token parse (TokenGroup tokens)
+        {
+            TokenGroup returnable = new TokenGroup();
+            OperatorGroup lowestPrecedenceOperator = Helper.getLowestPrecedenceOperator(tokens);
+
+            Token firstToken = tokens.get(0);
+            if(firstToken != null) {
+                if(firstToken instanceof Operator) {
+                    returnable.add(firstToken);
+
+                    if(tokens.size() > 1) {
+                        Token rest = parse(tokens.subList(1));
+                        if(rest instanceof ParseError) {
+
+                        }
+                    }
+                }
+                //Check if the token is nested already during the lexing process due to bracketing.
+                else if(firstToken instanceof TokenGroup) {
+
+                }
+            }
+
+            return returnable;
         }
     }
 }
