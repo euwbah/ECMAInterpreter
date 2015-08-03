@@ -348,7 +348,7 @@ public class Parser
 
             for(Token t : sampleSpace.tokens) {
                 if(t instanceof Operator && ((Operator) t).opGrp == opSplit) {
-                    returnable.add(currentSplit);
+                    if(currentSplit.size() != 0) returnable.add(currentSplit);
                     returnable.add(t);
                     currentSplit = new TokenGroup();
                 }
