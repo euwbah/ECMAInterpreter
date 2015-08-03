@@ -20,6 +20,49 @@ ECMAInterpreter : an impending Unity script
     + Additive
         - Addition | Subtraction
 
+* Parsing (TreeParsing)
+    + parse method
+    
+* Tokens
+    + Operators [Listed in Order of Precedence]
+        - Primary (TODO)
+            - Possession operator
+            - ... (TODO)
+        - Unary (TODO)
+            - Positive
+            - Negative
+            - Negation
+            - Pre-Increment (TODO)
+            - Pre-Decrement (TODO)
+        - Multiplicative
+            - Multiplication
+            - Division
+            - Modulo
+        - Additive
+            - Addition
+            - Subtraction
+        - Relational
+            - Less than
+            - Less than or Equal to
+            - More than or Equal to
+            - More than
+        - Equatorial
+            - Equals
+            - Not Equals
+        - Conditional AND
+        - Conditional OR
+        - Conditional ( ?: )
+            - Condition Marker '?'
+            - If-Else Marker ':'
+        - Assignment
+            - Assign
+            - Add-Assign
+            - Subtract-Assign
+            - Multiplicate-Assign
+            - Divide-Assign
+            - Modulo-Assign
+            - Lambda (really???)
+
 * Debug
     + CodePosition
         - Syntax error position detection
@@ -27,7 +70,14 @@ ECMAInterpreter : an impending Unity script
         - ParseTree ASCIInator
 
 ###Current WIP:
-- Parsing into ParseTree
-    - Parser.TreeParsing.splitBy()
+- Primary Operators
+    - Method calls, Array Indexes (type casting, maybe?)
+
+- Syntax Handlers
+    - Read from next brace-type
+    - Check for brace-type imbalances
+    - Smart Split
+        - e.g: Splitting parameters in a method call.
+
 - Evaluation
     Evaluator.Evaluator.EvaluateExpression()
