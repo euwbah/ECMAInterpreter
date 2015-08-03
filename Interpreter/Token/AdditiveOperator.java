@@ -1,7 +1,7 @@
 package Token;
 
 /**
- * Created by Matthew on 28/7/2015.
+ * 4th order
  */
 public class AdditiveOperator extends Operator{
     public AdditiveOperatorType type;

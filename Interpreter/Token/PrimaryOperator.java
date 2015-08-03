@@ -1,7 +1,7 @@
 package Token;
 
 /**
- * Created by Matthew on 28/7/2015.
+ * 1st Order
  */
 public class PrimaryOperator extends Operator {
     public PrimaryOperatorType type;

@@ -21,7 +21,7 @@ public class MethodCall extends PrimaryOperator {
      */
     public MethodCall(String rawParams) {
         String[] splitParams = rawParams.split(",");
-
+        //TODO: This will not work... strings must be ignored...
         this.params = new ArrayList<String>();
         for(String s : splitParams) params.add(s);
     }
