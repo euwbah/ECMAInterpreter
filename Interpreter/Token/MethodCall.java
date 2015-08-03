@@ -6,13 +6,16 @@ import java.util.ArrayList;
  * Created by Matthew on 31/7/2015.
  */
 public class MethodCall extends PrimaryOperator {
-    public ArrayList<String> params;
+    /**
+     * A list of TokenGroups containing fully parsed expressions..
+     */
+    public ArrayList<TokenGroup> listOfParameterExpressions;
 
     /**
      * Initialises an empty method call token with no parameters.
      */
     public MethodCall() {
-        params = new ArrayList<String>();
+        listOfParameterExpressions = new ArrayList<>();
     }
 
     /**
@@ -20,9 +23,6 @@ public class MethodCall extends PrimaryOperator {
      * @param rawParams A single string containing comma-separated parameters
      */
     public MethodCall(String rawParams) {
-        String[] splitParams = rawParams.split(",");
-        //TODO: This will not work... strings must be ignored...
-        this.params = new ArrayList<String>();
-        for(String s : splitParams) params.add(s);
+
     }
 }

@@ -4,8 +4,11 @@ import Elements.*;
 import Elements.Error;
 import Token.*;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 import Token.Operator.*;
+import com.sun.org.apache.bcel.internal.generic.ALOAD;
+import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 
 public class Parser
 {
@@ -290,6 +293,24 @@ public class Parser
         public static boolean isNotOperator(String test) {
             return notOperatorPattern.matcher(test).matches();
         }
+
+        /**
+         * To split based on a syntax grammar, ensuring that only top-level code is split.
+         *
+         * Code within literal string quotations, brackets, braces, array index square brackets, type arrow brackets
+         * will not be split.
+         *
+         * @param stringToSplit The string to process
+         * @param splitDeterminer The operator/grammar sign to check for to split the string.
+         * @return Returns an ArrayList&lt;String&gt; of all the splits, of which therein absents the splitDeterminer
+         */
+        public static ArrayList<String> smartSplit (String stringToSplit, String splitDeterminer) {
+            ArrayList<String> returnable = new ArrayList<>();
+
+
+
+            return returnable;
+        }
     }
 
     public static class TreeParsing
@@ -360,6 +381,39 @@ public class Parser
             if(currentSplit.size() != 0) returnable.add(currentSplit);
 
             return returnable;
+        }
+    }
+
+    public static class SyntaxHandler
+    {
+        public static class BraceTypeImbalances
+        {
+            /**
+             * Returns the number of extra opening brackets, (A value of -2 means 2 missing closing brackets)
+             *
+             * These are brackets ()
+             *
+             * E.g: ((( )) will return 1
+             *
+             * @param testCase The String to test for
+             * @return Returns the number of extra brackets
+             */
+            public static int getBracketImbalance (String testCase) {
+                String noStringLiteral = Parser.Helper.removeAllStringLiterals(testCase);
+                int unclosedOpeningBrackets = 0;
+
+                for(int i = 0; i < testCase.length(); i++) {
+                    String curr = String.valueOf(noStringLiteral.charAt(i));
+                    if(curr.equals("(")) {
+                        unclosedOpeningBrackets ++;
+                    }
+                    else if(curr.equals(")")) {
+                        unclosedOpeningBrackets --;
+                    }
+                }
+
+                return unclosedOpeningBrackets;
+            }
         }
     }
 }
