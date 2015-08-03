@@ -19,7 +19,10 @@ public class TokenGroup extends Token {
 
     public String toString() {
         String returnable = "";
+        int depth = 0;//Most likely either 0 or 1, since other depth is formed through recursion.
         for(Token t : tokens) {
+            returnable += indentation(depth);
+
             if(t instanceof Operator) {
                 returnable += "@" + t.getPosition().toString() + "::" + "{" + t.toString() + "}" + "\n";
             }
@@ -30,6 +33,48 @@ public class TokenGroup extends Token {
             else if(t instanceof Identifier) {
                 returnable += "@" + t.getPosition().toString() + ": " + "{Identifier " + ((Identifier) t).name + "}" + "\n";
             }
+            else if(t instanceof TokenGroup) {
+                returnable += "New TokenGroup => {\n";
+                returnable += ((TokenGroup) t).toString(depth + 1);
+                returnable += indentation(depth);
+                returnable += "}\n";
+            }
+        }
+
+        return returnable;
+    }
+
+    private String toString(int depth) {
+        String returnable = "";
+        for(Token t : tokens) {
+            returnable += indentation(depth);
+
+            if(t instanceof Operator) {
+                returnable += "@" + t.getPosition().toString() + "::" + "{" + t.toString() + "}" + "\n";
+            }
+            else if(t instanceof Literal) {
+                returnable += "@" + t.getPosition().toString() + ": " +
+                        "{Literal " + ((Literal) t).rawLiteralString + "::" + ((Literal) t).literalValue.type.toString() + "}" + "\n";
+            }
+            else if(t instanceof Identifier) {
+                returnable += "@" + t.getPosition().toString() + ": " + "{Identifier " + ((Identifier) t).name + "}" + "\n";
+            }
+            else if(t instanceof TokenGroup) {
+                returnable += "New TokenGroup => {\n";
+                returnable += ((TokenGroup) t).toString(depth + 1);
+                returnable += indentation(depth);
+                returnable += "}\n";
+            }
+        }
+
+        return returnable;
+    }
+
+    private String indentation(int depth) {
+        String returnable = "";
+
+        for(int indentationCounter = 0; indentationCounter < depth; indentationCounter++ ) {
+            returnable += "\t";
         }
 
         return returnable;

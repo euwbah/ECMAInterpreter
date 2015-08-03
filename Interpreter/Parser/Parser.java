@@ -242,7 +242,7 @@ public class Parser
 
 			for(int i = 0; i < group.tokens.size(); i++) {
                 Token currToken = group.tokens.get(i);
-                if(currToken instanceof Operator && ((Operator) currToken).opGrp.compareTo(opGrp) < 0) {//If is of lower precedence
+                if(currToken instanceof Operator && ((Operator) currToken).opGrp.compareTo(opGrp) > 0) {//If is of lower precedence
                     opGrp = ((Operator) currToken).opGrp;
                 }
             }
@@ -311,11 +311,25 @@ public class Parser
             TokenGroup returnable = new TokenGroup();
             OperatorGroup lowestPrecedenceOperator = Helper.getLowestPrecedenceOperator(tokens);
 
-            //Use this to split Token Groups...
-            TokenGroup currentGroup;
+            //Create a lowest Precendence split
+            TokenGroup lowestPrecedenceSplit = splitBy(lowestPrecedenceOperator, tokens);
 
-            for(int i = 0; i < tokens.size(); i++) {
-
+            if(lowestPrecedenceOperator != OperatorGroup.Primary && tokens.size() > 1) {
+                //Not primary, continue recursing...
+                for (Token t : lowestPrecedenceSplit.tokens) {
+                    //Iterate through each TokenGroup.
+                    if (t instanceof TokenGroup) {
+                        returnable.add(parse((TokenGroup) t));
+                    }
+                    else {
+                        returnable.add(t);
+                    }
+                }
+            }
+            else
+            {
+                //Stop recursing at Primary or if only a single token present...
+                return tokens;
             }
 
             return returnable;
@@ -329,7 +343,23 @@ public class Parser
          *         If no splits at all, simply return the input sample space.
          */
         private static TokenGroup splitBy(OperatorGroup opSplit, TokenGroup sampleSpace) {
-            //TODO
+            TokenGroup returnable = new TokenGroup();
+            TokenGroup currentSplit = new TokenGroup();
+
+            for(Token t : sampleSpace.tokens) {
+                if(t instanceof Operator && ((Operator) t).opGrp == opSplit) {
+                    returnable.add(currentSplit);
+                    returnable.add(t);
+                    currentSplit = new TokenGroup();
+                }
+                else {
+                    currentSplit.add(t);
+                }
+            }
+
+            if(currentSplit.size() != 0) returnable.add(currentSplit);
+
+            return returnable;
         }
     }
 }
