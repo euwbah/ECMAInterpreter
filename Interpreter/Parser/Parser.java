@@ -199,35 +199,13 @@ public class Parser
          */
         public static String removeAllStringLiterals(String expression)
         {
+            CodeHelper helper = new CodeHelper();
             String returnable = "";
-            boolean currentlyAString = false;
-            boolean usesDoubleQuote = false;
 
             for(int i = 0; i < expression.length(); i++) {
-                String curr = String.valueOf(expression.charAt(i));
-
-                if(!currentlyAString) {
-                    if(curr.equals("'")) {
-                        currentlyAString = true;
-                        usesDoubleQuote = false;
-                    }
-                    else if(curr.equals('"')) {
-                        currentlyAString = true;
-                        usesDoubleQuote = true;
-                    }
-                    else {
-                        returnable += curr;
-                    }
-                }
-                else {
-                    if((usesDoubleQuote && curr.equals('"')) ||
-                            (!usesDoubleQuote && curr.equals("'"))) {
-                        currentlyAString = false;
-                    }
-                    else if(curr.equals("\\")) {
-                        i++;//Skip the next char...
-                    }
-                }
+                String currStr = String.valueOf(expression.charAt(i));
+                helper.scan(currStr);
+                returnable += helper.currentlyIsString ? "" : currStr;
             }
 
             return returnable;
