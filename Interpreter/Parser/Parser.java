@@ -380,18 +380,20 @@ public class Parser
                 String noStringLiteral = Parser.Helper.removeAllStringLiterals(testCase);
                 int unclosedOpeningBrackets = 0;
 
-                for(int i = 0; i < testCase.length(); i++) {
+                for(int i = 0; i < noStringLiteral.length(); i++) {
                     String curr = String.valueOf(noStringLiteral.charAt(i));
-                    if(curr.equals("(")) {
-                        unclosedOpeningBrackets ++;
-                    }
-                    else if(curr.equals(")")) {
-                        unclosedOpeningBrackets --;
+
+                    if (curr.equals("(")) {
+                        unclosedOpeningBrackets++;
+                    } else if (curr.equals(")")) {
+                        unclosedOpeningBrackets--;
                     }
                 }
 
                 return unclosedOpeningBrackets;
             }
+
+
         }
     }
 }
