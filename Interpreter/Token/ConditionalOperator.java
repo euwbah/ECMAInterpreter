@@ -1,7 +1,7 @@
 package Token;
 
 /**
- * Created by Matthew on 3/8/2015.
+ * 9th order
  */
 public class ConditionalOperator extends Operator {
     public ConditionalOperatorType type;

@@ -12,6 +12,6 @@ public class UnaryOperator extends Operator {
     }
 
     public enum UnaryOperatorType {
-        Positive, Negative, Negation,
+        Positive, Negative, Negation, PreIncrement, PreDecrement
     }
 }

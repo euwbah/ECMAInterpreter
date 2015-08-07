@@ -67,38 +67,80 @@ public class Parser
                     //This means that toBeScanned starts with an operator
                     String operatorString = returnStringUntilNextIdentifier(toBeScanned);
                     toBeScanned = toBeScanned.substring(operatorString.length());
+                    Token toAdd = null;
 
                     switch(operatorString) {
+                        case "++":
+                            if(currentGroup.get(currentGroup.size() - 1) instanceof Operator)
+                                toAdd = new UnaryOperator(UnaryOperator.UnaryOperatorType.PreIncrement);
+                            else
+                                //toAdd = new PrimaryOperator(Post)
+                            break;
+                        case "*":
+                            toAdd = new MultiplicativeOperator(MultiplicativeOperator.MultiplicativeOperatorType.Multiplication);
+                            break;
+                        case "/":
+                            toAdd = new MultiplicativeOperator(MultiplicativeOperator.MultiplicativeOperatorType.Division);
+                            break;
+                        case "%":
+                            toAdd = new MultiplicativeOperator(MultiplicativeOperator.MultiplicativeOperatorType.Modulo);
+                            break;
                         case "+":
                             if(currentGroup.tokens.size() == 0) {
                                 //+ is the first operator, hence Unary Positive.
-                                UnaryOperator op = new UnaryOperator(UnaryOperator.UnaryOperatorType.Positive);
-                                op.setPosition(currentCodePosition);
-                                currentGroup.tokens.add(op);
+                                toAdd = new UnaryOperator(UnaryOperator.UnaryOperatorType.Positive);
                             }
                             else {
                                 //Binary param addition operator
-                                AdditiveOperator op = new AdditiveOperator(AdditiveOperator.AdditiveOperatorType.Addition);
-                                op.setPosition(currentCodePosition);
-                                currentGroup.tokens.add(op);
+                                toAdd = new AdditiveOperator(AdditiveOperator.AdditiveOperatorType.Addition);
                             }
                             break;
                         case "-":
                             if(currentGroup.tokens.size() == 0) {
                                 //+ is the first operator, hence Unary Positive.
-                                UnaryOperator op = new UnaryOperator(UnaryOperator.UnaryOperatorType.Negative);
-                                op.setPosition(currentCodePosition);
-                                currentGroup.tokens.add(op);
+                                toAdd = new UnaryOperator(UnaryOperator.UnaryOperatorType.Negative);
                             }
                             else {
                                 //Binary param addition operator
-                                AdditiveOperator op = new AdditiveOperator(AdditiveOperator.AdditiveOperatorType.Subtraction);
-                                op.setPosition(currentCodePosition);
-                                currentGroup.tokens.add(op);
+                                toAdd = new AdditiveOperator(AdditiveOperator.AdditiveOperatorType.Subtraction);
                             }
+                            break;
+                        case "<":
+                            toAdd = new RelationalOperator(RelationalOperator.RelationalOperatorType.LessThan);
+                            break;
+                        case "<=":
+                            toAdd = new RelationalOperator(RelationalOperator.RelationalOperatorType.LessThanOrEqualTo);
+                            break;
+                        case ">":
+                            toAdd = new RelationalOperator(RelationalOperator.RelationalOperatorType.MoreThan);
+                            break;
+                        case ">=":
+                            toAdd = new RelationalOperator(RelationalOperator.RelationalOperatorType.MoreThanOrEqualTo);
+                            break;
+                        case "==":
+                            toAdd = new EquatorialOperator(EquatorialOperator.EquatorialOperatorType.EqualsTo);
+                            break;
+                        case "!=":
+                            toAdd = new EquatorialOperator(EquatorialOperator.EquatorialOperatorType.NotEqualsTo);
+                            break;
+                        case "&&":
+                            toAdd = new ConditionalANDOperator();
+                            break;
+                        case "||":
+                            toAdd = new ConditionalOROperator();
+                            break;
+                        case "?":
+                            toAdd = new ConditionalOperator(ConditionalOperator.ConditionalOperatorType.ConditionalMarker);
+                            break;
+                        case ":":
+                            toAdd = new ConditionalOperator(ConditionalOperator.ConditionalOperatorType.IfElseCaseMarker);
                             break;
                     }
 
+                    if (toAdd != null) {
+                        toAdd.setPosition(currentCodePosition);
+                        currentGroup.tokens.add(toAdd);
+                    }
                     currentCodePosition.increment(operatorString);
                 }
                 //Identifier mode

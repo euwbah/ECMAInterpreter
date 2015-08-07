@@ -12,6 +12,6 @@ public class MultiplicativeOperator extends Operator {
     }
 
     public enum MultiplicativeOperatorType {
-        Multiplication, Division
+        Multiplication, Division, Modulo
     }
 }
