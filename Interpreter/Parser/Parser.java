@@ -74,7 +74,13 @@ public class Parser
                             if(currentGroup.get(currentGroup.size() - 1) instanceof Operator)
                                 toAdd = new UnaryOperator(UnaryOperator.UnaryOperatorType.PreIncrement);
                             else
-                                //toAdd = new PrimaryOperator(Post)
+                                toAdd = new PrimaryOperator(PrimaryOperator.PrimaryOperatorType.PostIncrement);
+                            break;
+                        case "--":
+                            if(currentGroup.get(currentGroup.size() - 1) instanceof Operator)
+                                toAdd = new UnaryOperator(UnaryOperator.UnaryOperatorType.PreDecrement);
+                            else
+                                toAdd = new PrimaryOperator(PrimaryOperator.PrimaryOperatorType.PostDecrement);
                             break;
                         case "*":
                             toAdd = new MultiplicativeOperator(MultiplicativeOperator.MultiplicativeOperatorType.Multiplication);
@@ -187,7 +193,7 @@ public class Parser
                 if(Helper.isAlphaNumeric(curr) || Helper.isWhiteSpace(curr))//Simple
                     returnable += curr;
                 else if(curr.equals(".") && !deciamalPointEncountered
-                        && !(Helper.isLetter(next) || Helper.isLetter(prev))) {//Decimal points are not possession ops
+                        && !(Helper.isLetter(next) || Helper.isLetter(prev))) {//Decimal points are not Possession ops
                     returnable += curr;
                     deciamalPointEncountered = true;
                 }

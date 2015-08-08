@@ -15,6 +15,6 @@ public class PrimaryOperator extends Operator {
     }
 
     public enum PrimaryOperatorType {
-        possession, methodCall, arrayIndex, postIncrement, postDecrement, initialiser
+        Possession, MethodCall, ArrayIndex, PostIncrement, PostDecrement, Initialiser
     }
 }

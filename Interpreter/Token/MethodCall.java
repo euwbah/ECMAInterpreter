@@ -17,7 +17,7 @@ public class MethodCall extends PrimaryOperator {
     public MethodCall() {
         listOfParameterExpressions = new ArrayList<>();
         this.opGrp = OperatorGroup.Primary;
-        this.type = PrimaryOperatorType.methodCall;
+        this.type = PrimaryOperatorType.MethodCall;
     }
 
     /**
