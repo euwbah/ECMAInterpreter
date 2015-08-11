@@ -70,17 +70,28 @@ public class Parser
                     Token toAdd = null;
 
                     switch(operatorString) {
+                        case "(":
+                            if(currentGroup.size() != 0 && currentGroup.get(currentGroup.size() - 1) instanceof Operator) {
+                                //Just parenthesis for a nested expression
+                                //String withinParenthesis =
+                            }
+                            break;
                         case "++":
-                            if(currentGroup.get(currentGroup.size() - 1) instanceof Operator)
+                            //Either first token existing, or preceding another operator
+                            if(currentGroup.size() == 0 || currentGroup.get(currentGroup.size() - 1) instanceof Operator)
                                 toAdd = new UnaryOperator(UnaryOperator.UnaryOperatorType.PreIncrement);
                             else
                                 toAdd = new PrimaryOperator(PrimaryOperator.PrimaryOperatorType.PostIncrement);
                             break;
                         case "--":
-                            if(currentGroup.get(currentGroup.size() - 1) instanceof Operator)
+                            //Either first token existing, or preceding another operator
+                            if(currentGroup.size() == 0 || currentGroup.get(currentGroup.size() - 1) instanceof Operator)
                                 toAdd = new UnaryOperator(UnaryOperator.UnaryOperatorType.PreDecrement);
                             else
                                 toAdd = new PrimaryOperator(PrimaryOperator.PrimaryOperatorType.PostDecrement);
+                            break;
+                        case "!":
+                            toAdd = new UnaryOperator(UnaryOperator.UnaryOperatorType.Negation);
                             break;
                         case "*":
                             toAdd = new MultiplicativeOperator(MultiplicativeOperator.MultiplicativeOperatorType.Multiplication);
@@ -332,9 +343,30 @@ public class Parser
          */
         public static ArrayList<String> smartSplit (String stringToSplit, String splitDeterminer) {
             ArrayList<String> returnable = new ArrayList<>();
+            CodeHelper helper = new CodeHelper();
 
+            if(splitDeterminer.length() == 0) {
+                returnable.add(stringToSplit);
+            }
+            else {
+                returnable.add("");
 
+                for (int i = 0; i < stringToSplit.length(); i++) {
+                    String curr = String.valueOf(stringToSplit.charAt(i));
 
+                    if (!helper.currentlyIsString && curr.equals(String.valueOf(splitDeterminer.charAt(0)))) {
+                        if(splitDeterminer.length() == 1) {
+                            returnable.add("");
+                        }
+                        else {
+                            String determinerChecked = stringToSplit.substring(i);
+                            if(determinerChecked.startsWith(splitDeterminer)) {
+
+                            }
+                        }
+                    }
+                }
+            }
             return returnable;
         }
     }
@@ -426,15 +458,20 @@ public class Parser
              */
             public static int getBracketImbalance (String testCase) {
                 String noStringLiteral = Parser.Helper.removeAllStringLiterals(testCase);
+                CodeHelper helper = new CodeHelper();
+
                 int unclosedOpeningBrackets = 0;
 
                 for(int i = 0; i < noStringLiteral.length(); i++) {
                     String curr = String.valueOf(noStringLiteral.charAt(i));
+                    helper.scan(curr);
 
-                    if (curr.equals("(")) {
-                        unclosedOpeningBrackets++;
-                    } else if (curr.equals(")")) {
-                        unclosedOpeningBrackets--;
+                    if(!helper.currentlyIsString) {
+                        if (curr.equals("(")) {
+                            unclosedOpeningBrackets++;
+                        } else if (curr.equals(")")) {
+                            unclosedOpeningBrackets--;
+                        }
                     }
                 }
 

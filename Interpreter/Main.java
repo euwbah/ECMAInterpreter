@@ -8,6 +8,9 @@ import Token.ParseError;
 public class Main {
     public static void main(String[] args) {
         //Testing... testing...
-        System.out.print(Parser.SyntaxHandler.BraceTypeImbalances.getBracketImbalance("asdf(bt.(a_')'ak(\"))\"md('('"));
+        TokenGroup test = Parser.Tokenizer.TokenizeExpression("++x");
+        TokenGroup tree = (TokenGroup) Parser.TreeParsing.parse(test);
+
+        System.out.print(tree.toString());
     }
 }
