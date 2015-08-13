@@ -7,16 +7,14 @@ import Token.*;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 import Token.Operator.*;
-import com.sun.org.apache.bcel.internal.generic.ALOAD;
-import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 
 public class Parser
 {
     public static class P_Literal
     {
-        public static Pattern numberPattern = Pattern.compile("^\\s*[0-9.]\\s*$");
-        public static Pattern boolPattern = Pattern.compile("^\\s*true\\s*$|^\\s*false\\s*$");
-        public static Pattern stringPattern = Pattern.compile("^\\s*\".*\"\\s*$|^\\s*\'.*\'\\s*$");
+        public static final Pattern numberPattern = Pattern.compile("^\\s*[0-9.]\\s*$");
+        public static final Pattern boolPattern = Pattern.compile("^\\s*true\\s*$|^\\s*false\\s*$");
+        public static final Pattern stringPattern = Pattern.compile("^\\s*\".*\"\\s*$|^\\s*\'.*\'\\s*$");
 
         public static boolean isNumber(String literalCase) {
             return numberPattern.matcher(literalCase).matches();
@@ -194,7 +192,7 @@ public class Parser
          */
         private static String returnStringUntilNextOperator(String expression) {
             String returnable = "";
-            boolean deciamalPointEncountered = false;//If true, the next . will be considered a . possesion operator.
+            boolean decimalPointEncountered = false;//If true, the next . will be considered a . possesion operator.
 
             for(int i = 0; i < expression.length(); i++) {
                 String curr = String.valueOf(expression.charAt(i));
@@ -203,10 +201,10 @@ public class Parser
 
                 if(Helper.isAlphaNumeric(curr) || Helper.isWhiteSpace(curr))//Simple
                     returnable += curr;
-                else if(curr.equals(".") && !deciamalPointEncountered
+                else if(curr.equals(".") && !decimalPointEncountered
                         && !(Helper.isLetter(next) || Helper.isLetter(prev))) {//Decimal points are not Possession ops
                     returnable += curr;
-                    deciamalPointEncountered = true;
+                    decimalPointEncountered = true;
                 }
                 else//Returnit.exe
                     return returnable;
@@ -245,11 +243,11 @@ public class Parser
         /**
          * Used to check if a String is an identifier
          */
-        private static Pattern identifierPattern = Pattern.compile("^[A-Za-z_]*[A-Za-z_0-9]+$");
-        private static Pattern numberPattern = Pattern.compile("$[0-9]+$");
-        private static Pattern letterPattern = Pattern.compile("^[A-Za-z_]+$");
-        private static Pattern whiteSpacePattern = Pattern.compile("^\\s+$");
-        private static Pattern notOperatorPattern = Pattern.compile("^[A-Za-z0-9_]*$");
+        private static final Pattern identifierPattern = Pattern.compile("^[A-Za-z_]*[A-Za-z_0-9]+$");
+        private static final Pattern numberPattern = Pattern.compile("$[0-9]+$");
+        private static final Pattern letterPattern = Pattern.compile("^[A-Za-z_]+$");
+        private static final Pattern whiteSpacePattern = Pattern.compile("^\\s+$");
+        private static final Pattern notOperatorPattern = Pattern.compile("^[A-Za-z0-9_]*$");
 
         /**
          * Removes everything encapsulated in "" for Lexing purposes
@@ -271,7 +269,7 @@ public class Parser
         }
 
         /**
-         * Gets the lowest precendence top-level operator from a TokenGroup
+         * Gets the lowest precedence top-level operator from a TokenGroup
          * Used as the first step for recursive-decent parsing
          *
          * @param group A Token Group containing the parsed expression.
@@ -325,7 +323,7 @@ public class Parser
         /**
          * Return true if input is not an operator. Whitespace is also counted as not an operator
          * @param test input test
-         * @return
+         * @return Returns a boolean true as long as the input string is not an operator
          */
         public static boolean isNotOperator(String test) {
             return notOperatorPattern.matcher(test).matches();
@@ -355,15 +353,23 @@ public class Parser
                     String curr = String.valueOf(stringToSplit.charAt(i));
 
                     if (!helper.currentlyIsString && curr.equals(String.valueOf(splitDeterminer.charAt(0)))) {
+                        //Seems to be some sort of match...
                         if(splitDeterminer.length() == 1) {
                             returnable.add("");
                         }
                         else {
                             String determinerChecked = stringToSplit.substring(i);
                             if(determinerChecked.startsWith(splitDeterminer)) {
-
+                                returnable.add("");
+                                i += splitDeterminer.length() - 1;
                             }
                         }
+                    }
+                    else
+                    {
+                        //No match...
+                        String concatenatedStr = returnable.get(returnable.size() - 1);
+                        concatenatedStr = concatenatedStr.concat(curr);
                     }
                 }
             }
@@ -390,7 +396,7 @@ public class Parser
             TokenGroup returnable = new TokenGroup();
             OperatorGroup lowestPrecedenceOperator = Helper.getLowestPrecedenceOperator(tokens);
 
-            //Create a lowest Precendence split
+            //Create a lowest Precedence split
             TokenGroup lowestPrecedenceSplit = splitBy(lowestPrecedenceOperator, tokens);
 
             if(lowestPrecedenceOperator != OperatorGroup.Primary && tokens.size() > 1) {
