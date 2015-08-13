@@ -370,6 +370,8 @@ public class Parser
                         //No match...
                         String concatenatedStr = returnable.get(returnable.size() - 1);
                         concatenatedStr = concatenatedStr.concat(curr);
+                        returnable.remove(returnable.size() - 1);
+                        returnable.add(concatenatedStr);
                     }
                 }
             }

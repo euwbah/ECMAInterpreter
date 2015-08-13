@@ -5,12 +5,16 @@ import Token.Token;
 import Token.TokenGroup;
 import Token.ParseError;
 
+import java.util.ArrayList;
+
 public class Main {
     public static void main(String[] args) {
         //Testing... testing...
-        TokenGroup test = Parser.Tokenizer.TokenizeExpression("++x");
-        TokenGroup tree = (TokenGroup) Parser.TreeParsing.parse(test);
+        String testSplit = "Derp => {Lol} => Face";
+        ArrayList<String> result = Parser.Helper.smartSplit(testSplit, "=>");
 
-        System.out.print(tree.toString());
+        System.out.println("Original: " + testSplit);
+
+        result.forEach(System.out::println);
     }
 }
