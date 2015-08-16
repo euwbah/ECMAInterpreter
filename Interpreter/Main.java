@@ -10,11 +10,11 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
         //Testing... testing...
-        String testSplit = "Derp => {Lol} => Face";
-        ArrayList<String> result = Parser.Helper.smartSplit(testSplit, "=>");
 
-        System.out.println("Original: " + testSplit);
+        String original = "hamla(asdf(potat)o(asdf)(((a))))dnkvea()";
 
-        result.forEach(System.out::println);
+        System.out.println("Original: " + original);
+
+        System.out.println("Within Parenthesis: " + Parser.Helper.readWithinParenthesis(original));
     }
 }

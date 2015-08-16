@@ -320,6 +320,53 @@ public class Parser
             return whiteSpacePattern.matcher(test).matches();
         }
 
+        public static String readWithinParenthesis (String input) {
+            String returnable = "";
+
+            CodeHelper helper = new CodeHelper();
+
+            int depth = 0;
+
+            for(int i = 0; i < input.length(); i++) {
+                String curr = String.valueOf(input.charAt(i));
+
+                helper.scan(curr);
+
+                if(helper.currentlyIsString) {
+                    if(depth != 0) {
+                        returnable += curr;
+                    }
+                }
+                else {
+                    if(depth != 0) {
+                        if(!helper.currentlyIsString) {
+                            if(curr.equals(")")) {
+                                depth --;
+
+                                if(depth == 0) {
+                                    return returnable;
+                                }
+                            }
+                            else if(curr.equals("(")) {
+                                depth ++;
+                            }
+                        }
+
+                        returnable += curr;
+                    }
+                    else
+                    {
+                        if(curr.equals("("))
+                            depth ++;
+                        else if(curr.equals(")"))
+                            depth --;
+                    }
+                }
+            }
+
+            return returnable;
+        }
+
         /**
          * Return true if input is not an operator. Whitespace is also counted as not an operator
          * @param test input test
