@@ -71,7 +71,18 @@ public class Parser
                         case "(":
                             if(currentGroup.size() != 0 && currentGroup.get(currentGroup.size() - 1) instanceof Operator) {
                                 //Just parenthesis for a nested expression
-                                //String withinParenthesis =
+                                //Note: The '(' isn't included in toBeScanned...
+                                String withinParenthesis = Helper.readWithinParenthesis("(" + toBeScanned);
+
+                                TokenGroup addable = new TokenGroup();
+                                addable.add(TokenizeExpression(withinParenthesis));
+
+                                toAdd = addable;
+
+                                toBeScanned = toBeScanned.substring(withinParenthesis.length() - 1);
+                            }
+                            else if(currentGroup.size() != 0 && currentGroup.get(currentGroup.size() - 1) instanceof Identifier) {
+                                //TODO
                             }
                             break;
                         case "++":
@@ -157,6 +168,25 @@ public class Parser
                         currentGroup.tokens.add(toAdd);
                     }
                     currentCodePosition.increment(operatorString);
+
+                    //Make sure random whitespace don't get ignored. Crucial for double-operators
+                    //e.g: * ++ => 3 * ++4
+                    //     "* (" => 5 * (3 - 4)
+
+                    String whiteSpaceTrailing = Helper.readWhiteSpace(toBeScanned);
+
+                    if(whiteSpaceTrailing.length() < toBeScanned.length()) {
+                        toBeScanned = toBeScanned.substring(whiteSpaceTrailing.length());
+
+                        currentCodePosition.increment(whiteSpaceTrailing);
+                    }
+                    else {
+                        //TODO: Figure out if a ParseError should be returned instead...
+                        toBeScanned = "";
+
+                        //Does this work o.O
+                        currentCodePosition.increment(whiteSpaceTrailing);
+                    }
                 }
                 //Identifier mode
                 else {
@@ -185,7 +215,8 @@ public class Parser
         }
 
         /**
-         * Checks a String and returns everything until the next operator (excluding the operator)
+         * Checks a String and returns everything until the next operator (excluding the operator).
+         * Whitespace will be returned. E.g: rSUNO("4  + 2") == "4  ", and not "4".
          * @param expression A String to check for
          * @return Returns everything before the next operator.
          *         Returns "" if the first char is an operator.
@@ -214,7 +245,8 @@ public class Parser
         }
 
         /**
-         * Checks a String and returns everything until the next identifier (excluding the first char of the identifier)
+         * Checks a String and returns everything until the next identifier (excluding the first char of the identifier).
+         * Whitespace will not be returned. E.g: rSUNI("* 6") == "*" and not "* ".
          * @param expression A String to check for
          * @return Returns everything before the next Identifier.
          *         Returns "" if the first char is not an operator (whitespace inclusive).
@@ -320,6 +352,28 @@ public class Parser
             return whiteSpacePattern.matcher(test).matches();
         }
 
+        public static String readWhiteSpace(String test) {
+            String returnable = "";
+
+            for(int i = 0; i < test.length(); i++) {
+                String curr = String.valueOf(test.charAt(i));
+
+                if(isWhiteSpace(curr)) {
+                    returnable += curr;
+                }
+                else
+                    return returnable;
+            }
+
+            return returnable;
+        }
+
+        /**
+         * Retrieves the string within the first group of parenthesis. Ignores anything after the first group.
+         *
+         * @param input The input string. Ensure the parenthesis match.
+         * @return Returns the String within the
+         */
         public static String readWithinParenthesis (String input) {
             String returnable = "";
 

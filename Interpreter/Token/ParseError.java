@@ -7,8 +7,14 @@ import Parser.Parser.*;
  */
 public class ParseError extends Token {
     public String errorMessage;
+    public ParseErrorType type;
 
-    public ParseError(String errorMessage) {
+    public ParseError(String errorMessage, ParseErrorType type) {
         this.errorMessage = errorMessage;
+        this.type = type;
+    }
+
+    public enum ParseErrorType {
+        NativeError
     }
 }

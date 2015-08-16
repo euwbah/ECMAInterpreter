@@ -11,10 +11,10 @@ public class Main {
     public static void main(String[] args) {
         //Testing... testing...
 
-        String original = "hamla(asdf(potat)o(asdf)(((a))))dnkvea()";
+        String expression = "4 * 6";
 
-        System.out.println("Original: " + original);
+        TokenGroup tokenized = Parser.Tokenizer.TokenizeExpression(expression);
 
-        System.out.println("Within Parenthesis: " + Parser.Helper.readWithinParenthesis(original));
+        System.out.println(tokenized.toString());
     }
 }
