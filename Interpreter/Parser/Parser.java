@@ -51,11 +51,11 @@ public class Parser
          * @param expression An expression
          * @return Returns a TokenGroup of the TokenizedExpression
          */
-        public static TokenGroup TokenizeExpression(String expression)
+        public static TokenGroup TokenizeExpression(String expression, CodePosition _codePos)
         {
             TokenGroup currentGroup = new TokenGroup();
             String toBeScanned = expression;
-            CodePosition currentCodePosition = new CodePosition();
+            CodePosition currentCodePosition = _codePos != null ? _codePos : new CodePosition();
 
             //Repeat until everything is scanned
             while(!toBeScanned.trim().equals("")) {
@@ -72,19 +72,47 @@ public class Parser
                             if(currentGroup.size() != 0 && currentGroup.get(currentGroup.size() - 1) instanceof Operator) {
                                 //Just parenthesis for a nested expression
                                 //Note: The '(' isn't included in toBeScanned...
-                                String withinParenthesis = Helper.readWithinParenthesis("(" + toBeScanned);
 
-                                TokenGroup addable = new TokenGroup();
-                                addable.add(TokenizeExpression(withinParenthesis));
+                                int unclosedOpeningParenthesis = SyntaxHandler.BraceTypeImbalances.getParenthesisImbalance("(" + toBeScanned);
 
-                                toAdd = addable;
+                                currentCodePosition.increment("(");//Don't forget this!
 
-                                toBeScanned = toBeScanned.substring(withinParenthesis.length() - 1);
+                                if(unclosedOpeningParenthesis <= 0) {//Everything should work fine even if there are extra closing parenthesis.
+                                    String withinParenthesis = Helper.readWithinParenthesis("(" + toBeScanned);
+
+                                    TokenGroup addable = new TokenGroup();
+                                    addable.add(TokenizeExpression(withinParenthesis, currentCodePosition));
+                                    toAdd = addable;
+
+                                    toBeScanned = toBeScanned.substring(withinParenthesis.length() - 1 + 2);//-1 cuz 0 index, + 2 cuz of the open/close brackets
+                                }
+                                else
+                                {
+                                    //Note: This only handles unclosed parenthesis.
+                                    //'Unopened' parenthesis issues are handled in case ")" (which should never be the case).
+                                    ParseError returnableError = new ParseError(unclosedOpeningParenthesis + "Missing closing parenthesis ')'",
+                                            ParseError.ParseErrorType.SyntaxError, "Brace Imbalance");
+
+                                    returnableError.setPosition(currentCodePosition);
+
+                                    currentGroup.add(returnableError);
+                                    return currentGroup;
+                                }
                             }
                             else if(currentGroup.size() != 0 && currentGroup.get(currentGroup.size() - 1) instanceof Identifier) {
                                 //TODO
                             }
                             break;
+                        case ")":
+                            //Now there's your problem...
+                            ParseError returnableError = new ParseError("An attempt was made to close parenthesis that was never opened.\n" +
+                                    "Did you forget to add an opening parenthesis somewhere? '('",
+                                    ParseError.ParseErrorType.SyntaxError, "Brace Imbalance");
+
+                            returnableError.setPosition(currentCodePosition);
+
+                            currentGroup.add(returnableError);
+                            return currentGroup;
                         case "++":
                             //Either first token existing, or preceding another operator
                             if(currentGroup.size() == 0 || currentGroup.get(currentGroup.size() - 1) instanceof Operator)
@@ -565,7 +593,7 @@ public class Parser
              * @param testCase The String to test for
              * @return Returns the number of extra brackets
              */
-            public static int getBracketImbalance (String testCase) {
+            public static int getParenthesisImbalance(String testCase) {
                 String noStringLiteral = Parser.Helper.removeAllStringLiterals(testCase);
                 CodeHelper helper = new CodeHelper();
 
@@ -586,8 +614,6 @@ public class Parser
 
                 return unclosedOpeningBrackets;
             }
-
-
         }
     }
 }

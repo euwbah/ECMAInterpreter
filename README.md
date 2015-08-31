@@ -13,12 +13,12 @@ ECMAInterpreter : an impending Unity script
 
 ###What works:
 * Lexing
-    + Unary
-        - Positive | Negative
-    + Literal
-        - Numbers
-    + Additive
-        - Addition | Subtraction
+    + Everything in an expression, except
+        - Array Indexers
+        - Method Call
+        - Type Casting
+        - Code Block {..}
+    - Smart context-sensitive split
 
 * Parsing (TreeParsing)
     + parse method
@@ -74,10 +74,9 @@ ECMAInterpreter : an impending Unity script
     - Method calls, Array Indexes (type casting, maybe?)
 
 - Syntax Handlers
-    - Read from next brace-type
-    - Check for brace-type imbalances
-    - Smart Split
-        - e.g: Splitting parameters in a method call.
+    - Read from next brace-type. _Done. Ready for testing_
+    - Check for brace-type imbalances _Done. Ready for testing_
+    - Handle Syntax Errors!!!!
 
-- Evaluation
+- Evaluation (A long, loooong way off)
     Evaluator.Evaluator.EvaluateExpression()
